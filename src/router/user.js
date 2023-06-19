@@ -13,13 +13,13 @@ router.post('/users/signup', async (req, res) => {
     const [token, error] = await newUser.generateAuthToken();
     if (error) {
       console.log('Error Occurred', error);
-      return res.send('Error Occurred');
+      return res.status(500).send('Error Occurred');
     }
     console.log('Signed Up successfully', token);
-    return res.send(token).status(201);
+    return res.status(201).send(token);
   } catch (error) {
     console.log('Error Occurred', error);
-    return res.send('Error Occurred');
+    return res.status(500).send('Error Occurred');
   }
 });
 
@@ -34,25 +34,31 @@ router.post('/users/login', async (req, res) => {
     const [token, error] = await user.generateAuthToken();
     if (error) {
       console.log('Error Occurred', error);
-      return res.send('Error Occurred');
+      return res.status(404).send('Error Occurred');
     }
     console.log('Logged In successfully for 10 minutes');
 
-    return res.send(token).status(200);
+    return res.status(200).send(token);
   } catch (error) {
     console.log(error);
-    return res.send('error while logging in');
+    return res.status(500).send('error while logging in');
   }
 });
 
 router.post('/users/logout', async (req, res) => {
-  const userSessionToken = req.header('Authorization').replace('Bearer ', '');
-  const userId = await decryptToken(req);
-  const user = await User.findById(userId);
+  try {
+    const userSessionToken = req.header('Authorization').replace('Bearer ', '');
+    const userId = await decryptToken(req);
 
-  user.tokens = user.tokens.filter((token) => token.token !== userSessionToken);
-  await user.save();
-  res.send('Logout Successfully');
+    const user = await User.findById(userId);
+
+    user.tokens = user.tokens.filter((token) => token.token !== userSessionToken);
+    await user.save();
+    res.send('Logout Successfully');
+  } catch (error) {
+    console.log(`Error occurred while logging out : ${error?.message}`);
+    res.status(500).send('Logging out failed');
+  }
 });
 
 // router.post("/users",async (req,res) => {

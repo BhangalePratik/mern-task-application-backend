@@ -26,7 +26,7 @@ router.get('/tasks', async (req, res) => {
       console.log('No task found');
       return res.status(404).send('No task found');
     }
-    return res.send(results);
+    return res.status(200).send(results);
   } catch (error) {
     console.log('Error Occurred while finding Task', error);
     return res.status(500).send('Issue Occurred at Server Side While Finding Task');

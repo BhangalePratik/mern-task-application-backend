@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
+console.log(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`);
 mongoose.connect(
-  'mongodb://127.0.0.1:27017/task-manager-react-api',
+  `mongodb://127.0.0.1:27017/${process.env.DB_NAME}`,
   {
     useUnifiedTopology: true,
     useNewUrlParser: true,
