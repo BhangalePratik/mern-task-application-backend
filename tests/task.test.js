@@ -61,7 +61,7 @@ test('Updating valid fields', async () => {
 });
 
 test('Updating invalid fields', async () => {
-  const { _id,createdBy, ...dummyTaskOtherData } = dummyTaskData;
+  const { _id, createdBy, ...dummyTaskOtherData } = dummyTaskData;
   await request(app).patch('/tasks').set('Authorization', `Bearer ${dummyUserData.tokens[0].token}`).send({
     ...dummyTaskOtherData,
     contributor: 'admin',
@@ -71,7 +71,7 @@ test('Updating invalid fields', async () => {
 });
 
 test('Updating task but passing incorrect task id', async () => {
-  const { _id,createdBy, ...dummyTaskOtherData } = dummyTaskData;
+  const { _id, createdBy, ...dummyTaskOtherData } = dummyTaskData;
   await request(app).patch('/tasks').set('Authorization', `Bearer ${dummyUserData.tokens[0].token}`).send({
     ...dummyTaskOtherData,
     title: 'second task',
