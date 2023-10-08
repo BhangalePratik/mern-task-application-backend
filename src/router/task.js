@@ -7,6 +7,7 @@ const decryptToken = require('../helper/decrypt_jwt_token');
 
 router.post('/tasks', async (req, res) => {
   try {
+    console.log(req.body);
     const newTask = new Task(req.body);
     newTask.createdBy = await decryptToken(req);
     const response = await newTask.save();
